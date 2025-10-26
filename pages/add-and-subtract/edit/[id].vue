@@ -19,7 +19,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useNuxtApp } from "#app";
 import { Icon } from "@iconify/vue";
@@ -38,21 +38,44 @@ const route = useRoute();
 const { $notify } = useNuxtApp();
 const formRef = ref(null);
 const loading = ref(true);
+const operationData = ref(null);
 
 const loadData = async () => {
   loading.value = true;
   try {
-    const data = await useApiService.get(`add-and-subtract/${route.params.id}`);
-    if (data && formRef.value) {
-      formRef.value.setEdit(data);
+    const response = await useApiService.get(`add-and-subtract/${route.params.id}`);
+    console.log("API Response:", response);
+    
+    // Handle different response structures
+    const data = response?.data || response;
+    
+    if (data) {
+      console.log("Operation data to set:", data);
+      operationData.value = data;
     }
   } catch (error) {
-    $notify("مشکلی در بارگذاری داده‌ها پیش آمد", "error");
+    console.error("Error loading data:", error);
     router.push("/add-and-subtract");
   } finally {
     loading.value = false;
   }
 };
+
+// Watch for both formRef and operationData to be ready
+watch([formRef, operationData], ([form, data]) => {
+  if (form && data && typeof form.setEdit === 'function') {
+    console.log("Setting edit data:", data);
+    console.log("Form ref methods:", Object.keys(form));
+    try {
+      form.setEdit(data);
+      console.log("setEdit called successfully");
+    } catch (error) {
+      console.error("Error calling setEdit:", error);
+    }
+  } else {
+    console.log("Waiting for form or data:", { hasForm: !!form, hasData: !!data, hasSetEdit: form && typeof form.setEdit === 'function' });
+  }
+}, { immediate: true });
 
 const handleExit = () => {
   router.push("/add-and-subtract");
