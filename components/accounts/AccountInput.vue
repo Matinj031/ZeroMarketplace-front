@@ -6,7 +6,6 @@
     :hide-no-data="true"
     item-value="_id"
     item-title="title"
-    label="حساب"
     density="compact"
     variant="outlined"
     @scroll:bottom="loadMoreItems"

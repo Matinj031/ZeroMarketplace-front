@@ -1,81 +1,44 @@
 <template>
-  <v-form class="mx-5" @submit.prevent="submit" ref="addAndSubtractForm">
+  <v-form class="mx-5" @submit.prevent="submit" ref="addAndSubtractForm" validate-on="submit lazy">
     <v-row class="mt-2">
       <!--      Title      -->
-      <v-col class="mt-n1 mt-md-0" cols="12" md="4">
-        <v-text-field
-          class="mt-3 ltrDirection"
-          v-model="form.title"
-          label="عنوان"
-          placeholder="وارد کنید"
-          :readonly="loading"
-          :rules="[rules.required]"
-          density="compact"
-          variant="outlined"
-        >
-        </v-text-field>
+      <v-col cols="12" md="4">
+        <v-label class="text-subtitle-2 font-weight-semibold pb-2 text-textPrimary">عنوان</v-label>
+        <v-text-field v-model="form.title" placeholder="وارد کنید" :readonly="loading" :rules="[rules.required]"
+          density="compact" variant="outlined" hide-details="auto" />
       </v-col>
 
       <!--      Default      -->
-      <v-col class="mt-n5 mt-md-0" cols="12" md="4">
-        <PercentOrPriceInput
-          class="mt-3 ltrDirection"
-          v-model="form.default"
-          label="مقدار پیش فرض"
-          placeholder="وارد کنید"
-          :readonly="loading"
-          :rules="[rules.required]"
-        />
+      <v-col cols="12" md="4">
+        <v-label class="text-subtitle-2 font-weight-semibold pb-2 text-textPrimary">مقدار پیش فرض</v-label>
+        <PercentOrPriceInput v-model="form.default" placeholder="وارد کنید" :readonly="loading"
+          :rules="[rules.required]" />
       </v-col>
 
       <!--      Operation      -->
-      <v-col class="mt-n5 mt-md-3" cols="12" md="4">
-        <v-select
-          class="ltrDirection"
-          v-model="form.operation"
-          label="نوع عملیات"
-          placeholder="انتخاب کنید"
-          :items="operations"
-          :readonly="loading"
-          :rules="[rules.required]"
-          density="compact"
-          variant="outlined"
-        >
-        </v-select>
+      <v-col cols="12" md="4">
+        <v-label class="text-subtitle-2 font-weight-semibold pb-2 text-textPrimary">نوع عملیات</v-label>
+        <v-select v-model="form.operation" placeholder="انتخاب کنید" :items="operations" :readonly="loading"
+          :rules="[rules.required]" density="compact" variant="outlined" hide-details="auto" />
       </v-col>
 
       <!--      _Account      -->
-      <v-col class="mt-n5 mt-md-0" cols="12" md="4">
+      <v-col cols="12" md="4">
+        <v-label class="text-subtitle-2 font-weight-semibold pb-2 text-textPrimary">حساب</v-label>
         <AccountInput v-model="form._account" />
       </v-col>
 
       <!--     Actions       -->
       <v-col class="mt-6" cols="12">
         <!--       Submit       -->
-        <v-btn
-          class="border rounded-lg"
-          :loading="form.loading"
-          prepend-icon="mdi-check-circle-outline"
-          height="40"
-          width="100"
-          variant="text"
-          type="submit"
-          density="compact"
-        >
+        <v-btn class="border rounded-lg" :loading="form.loading" prepend-icon="mdi-check-circle-outline" height="40"
+          width="100" variant="text" type="submit" density="compact">
           ثبت
         </v-btn>
 
         <!--       Reset       -->
-        <v-btn
-          class="border mx-2 rounded-lg"
-          color="pink"
-          prepend-icon="mdi-delete-outline"
-          height="40"
-          width="100"
-          variant="text"
-          @click="reset"
-          density="compact"
-        >
+        <v-btn class="border mx-2 rounded-lg" color="pink" prepend-icon="mdi-delete-outline" height="40" width="100"
+          variant="text" @click="reset" density="compact">
           بازنگری
         </v-btn>
       </v-col>
