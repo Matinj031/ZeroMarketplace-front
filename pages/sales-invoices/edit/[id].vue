@@ -19,7 +19,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, nextTick } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useNuxtApp } from "#app";
 import { Icon } from "@iconify/vue";
@@ -43,14 +43,18 @@ const loadData = async () => {
   loading.value = true;
   try {
     const data = await useApiService.get(`sales-invoices/${route.params.id}`);
-    if (data && formRef.value) {
-      formRef.value.setEdit(data);
+    if (data) {
+      loading.value = false;
+      await nextTick();
+      // Small delay to ensure component is fully mounted
+      await new Promise(resolve => setTimeout(resolve, 100));
+      if (formRef.value && formRef.value.setEdit) {
+        await formRef.value.setEdit(data);
+      }
     }
   } catch (error) {
     $notify("مشکلی در بارگذاری داده‌ها پیش آمد", "error");
     router.push("/sales-invoices");
-  } finally {
-    loading.value = false;
   }
 };
 
@@ -59,10 +63,10 @@ const handleExit = () => {
 };
 
 const handleRefresh = () => {
-  // Optionally refresh data or perform other actions
+  loadData();
 };
 
-onMounted(() => {
-  loadData();
+onMounted(async () => {
+  await loadData();
 });
 </script>

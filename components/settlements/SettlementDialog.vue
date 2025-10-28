@@ -19,23 +19,12 @@
           <!--     Action       -->
           <v-col class="text-end" cols="3">
             <!--      Back      -->
-            <v-btn
-              v-if="form.window !== 1"
-              @click="form.window = 1"
-              size="small"
-              icon
-            >
+            <v-btn v-if="form.window !== 1" @click="form.window = 1" size="small" icon>
               <v-icon>mdi-arrow-left</v-icon>
             </v-btn>
 
             <!--      Close      -->
-            <v-btn
-              class=""
-              v-if="form.window === 1"
-              @click="exit"
-              size="small"
-              icon
-            >
+            <v-btn class="" v-if="form.window === 1" @click="exit" size="small" icon>
               <v-icon>mdi-close</v-icon>
             </v-btn>
           </v-col>
@@ -45,12 +34,7 @@
 
       <!--  Window Content    -->
       <v-window v-model="form.window" class="w-100">
-        <v-form
-          :readonly="loading"
-          @submit.prevent="submit"
-          ref="settlementForm"
-          validate-on="submit lazy"
-        >
+        <v-form :readonly="loading" @submit.prevent="submit" ref="settlementForm" validate-on="submit lazy">
           <!--   Settlement Form    -->
           <v-window-item :value="1">
             <v-col class="ma-0 pa-0" cols="12">
@@ -59,14 +43,8 @@
                 <!--   Amount   -->
                 <v-col class="d-flex" cols="12" md="12">
                   <v-label class="d-inline-block mx-2 mt-4">مبلغ:</v-label>
-                  <PriceInput
-                    class="font-weight-bold text-secondary"
-                    v-model="info.amount"
-                    label=""
-                    density="default"
-                    variant="solo-filled"
-                    readonly
-                  />
+                  <PriceInput class="font-weight-bold text-secondary" v-model="info.amount" label="" density="default"
+                    variant="solo-filled" readonly />
                 </v-col>
               </v-row>
 
@@ -82,24 +60,13 @@
                 <!--   Cash Amount   -->
                 <v-col class="d-flex mt-5" cols="12" md="12">
                   <v-label class="d-inline-block mx-7 mt-2">نقد:</v-label>
-                  <PriceInput
-                    v-model="form.payment.cash"
-                    :readonly="form.payment.distributedCash"
-                    :disabled="!validCashAccounts"
-                    @click:append="form.window = 2"
-                    append-icon="mdi-cash-multiple"
-                    label=""
-                    density="compact"
-                    variant="outlined"
-                  />
+                  <PriceInput v-model="form.payment.cash" :readonly="form.payment.distributedCash"
+                    :disabled="!validCashAccounts" @click:append="form.window = 2" append-icon="mdi-cash-multiple"
+                    label="" density="compact" variant="outlined" />
                 </v-col>
 
                 <!--      Invalid Cash Accounts          -->
-                <v-col
-                  v-if="!validCashAccounts"
-                  class="text-red text-caption mx-10 mt-n9 mb-5"
-                  cols="12"
-                >
+                <v-col v-if="!validCashAccounts" class="text-red text-caption mx-10 mt-n9 mb-5" cols="12">
                   <label>پرداخت نقدی غیر فعال است. زیرا:</label>
                   <ul class="mr-10">
                     <li v-if="!cashAccountsCount">
@@ -114,25 +81,13 @@
                 <!--   Bank Amount   -->
                 <v-col class="d-flex mt-n5" cols="12" md="12">
                   <v-label class="d-inline-block mx-2 mt-2">کارتخوان:</v-label>
-                  <PriceInput
-                    class=""
-                    v-model="form.payment.bank"
-                    :readonly="form.payment.distributedBank"
-                    :disabled="!validBankAccounts"
-                    @click:append="form.window = 3"
-                    append-icon="mdi-credit-card-multiple-outline"
-                    label=""
-                    density="compact"
-                    variant="outlined"
-                  />
+                  <PriceInput class="" v-model="form.payment.bank" :readonly="form.payment.distributedBank"
+                    :disabled="!validBankAccounts" @click:append="form.window = 3"
+                    append-icon="mdi-credit-card-multiple-outline" label="" density="compact" variant="outlined" />
                 </v-col>
 
                 <!--      Invalid Bank Accounts          -->
-                <v-col
-                  v-if="!validBankAccounts"
-                  class="text-red text-caption mx-10 mt-n9 mb-5"
-                  cols="12"
-                >
+                <v-col v-if="!validBankAccounts" class="text-red text-caption mx-10 mt-n9 mb-5" cols="12">
                   <label>پرداخت بانکی غیر فعال است. زیرا:</label>
                   <ul class="mr-10">
                     <li v-if="!bankAccountsCount">
@@ -147,13 +102,8 @@
                 <!--   Credit Amount   -->
                 <v-col class="d-flex mt-n5" cols="12" md="12">
                   <v-label class="d-inline-block mx-6 mt-2">نسیه:</v-label>
-                  <PriceInput
-                    class="ml-11"
-                    v-model="form.payment.credit"
-                    label=""
-                    density="compact"
-                    variant="outlined"
-                  />
+                  <PriceInput class="ml-11" v-model="form.payment.credit" label="" density="compact"
+                    variant="outlined" />
                 </v-col>
               </v-row>
 
@@ -164,15 +114,8 @@
                 <!--   Amount   -->
                 <v-col class="d-flex" cols="12" md="12">
                   <v-label class="d-inline-block mx-2 mt-4">باقیمانده:</v-label>
-                  <PriceInput
-                    class="font-weight-bold text-secondary"
-                    v-model="form.payment.remaining"
-                    :rules="[remaining]"
-                    label=""
-                    density="default"
-                    variant="solo-filled"
-                    readonly
-                  />
+                  <PriceInput class="font-weight-bold text-secondary" v-model="form.payment.remaining"
+                    :rules="[remaining]" label="" density="default" variant="solo-filled" readonly />
                 </v-col>
               </v-row>
             </v-col>
@@ -181,11 +124,7 @@
           <!--   Cash Accounts Form     -->
           <v-window-item class="pt-4" :value="2">
             <!--   Cash Accounts     -->
-            <v-row
-              class="d-flex px-6"
-              v-for="cashAccount in form.payment.cashAccounts"
-              cols="12"
-            >
+            <v-row class="d-flex px-6" v-for="cashAccount in form.payment.cashAccounts" cols="12">
               <v-label class="numberInputLabel d-inline-block ml-3 mt-2">
                 {{
                   accounts.find((i) => i._id === cashAccount._account).title
@@ -198,11 +137,7 @@
           <!--   Bank Accounts Form     -->
           <v-window-item class="pt-4" :value="3">
             <!--   Bank Accounts     -->
-            <v-row
-              class="d-flex px-6"
-              v-for="bankAccount in form.payment.bankAccounts"
-              cols="12"
-            >
+            <v-row class="d-flex px-6" v-for="bankAccount in form.payment.bankAccounts" cols="12">
               <v-label class="numberInputLabel d-inline-block ml-3 mt-2">
                 {{
                   accounts.find((i) => i._id === bankAccount._account).title
@@ -216,30 +151,14 @@
           <v-row class="mx-1 pb-5">
             <v-col cols="12">
               <!--       Submit       -->
-              <v-btn
-                class="border bg-secondary rounded-lg"
-                :loading="loading"
-                prepend-icon="mdi-check-circle-outline"
-                height="40"
-                width="100"
-                variant="text"
-                type="submit"
-                density="compact"
-              >
+              <v-btn class="border bg-secondary rounded-lg" :loading="loading" prepend-icon="mdi-check-circle-outline"
+                height="40" width="100" variant="text" type="submit" density="compact">
                 ثبت
               </v-btn>
 
               <!--       Reset       -->
-              <v-btn
-                class="border mx-2 rounded-lg"
-                color="pink"
-                prepend-icon="mdi-delete-outline"
-                height="40"
-                width="100"
-                variant="text"
-                @click="reset"
-                density="compact"
-              >
+              <v-btn class="border mx-2 rounded-lg" color="pink" prepend-icon="mdi-delete-outline" height="40"
+                width="100" variant="text" @click="reset" density="compact">
                 بازنگری
               </v-btn>
             </v-col>
@@ -264,18 +183,18 @@ const props = defineProps({
 const loading = ref(false);
 const action = ref("add");
 const accounts = ref([]);
-const info = ref({ amount: 0 });
+const info = ref({ amount: "0" });
 const form = ref({
   _id: "",
   payment: {
-    cash: 0,
+    cash: "0",
     cashAccounts: [],
     distributedCash: false,
-    bank: 0,
+    bank: "0",
     bankAccounts: [],
     distributedBank: false,
-    credit: 0,
-    remaining: 0,
+    credit: "0",
+    remaining: "0",
   },
   window: 1,
 });
@@ -291,7 +210,7 @@ const cashAccountsCount = ref(0);
 
 // Validation rules
 const remaining = (value) =>
-  value === 0 ? true : "مقدار باقیمانده باید ۰ شود";
+  value === "0" || value === 0 ? true : "مقدار باقیمانده باید ۰ شود";
 
 // Exit from dialog
 const exit = () => {
@@ -316,7 +235,7 @@ const getAccounts = async () => {
     // for each account
     accounts.value.forEach((account) => {
       // init the temp account Info
-      let temp = { _account: account._id, amount: 0, title: account?.title };
+      let temp = { _account: account._id, amount: "0", title: account?.title };
       // set the default
       if (account.defaultFor) temp.default = true;
 
@@ -371,9 +290,43 @@ const getSettlement = async (_id) => {
   // fetch the settlement data
   try {
     const data = await useApiService.get("settlements/" + _id);
-    // set payment data
-    form.value.payment = data.payment;
+    console.log("getSettlement response:", data);
+    console.log("payment data:", data.payment);
+
+    // Update payment amounts (keep existing account structure from getAccounts)
+    form.value.payment.cash = String(data.payment.cash || 0);
+    form.value.payment.distributedCash = data.payment.distributedCash || false;
+    form.value.payment.bank = String(data.payment.bank || 0);
+    form.value.payment.distributedBank = data.payment.distributedBank || false;
+    form.value.payment.credit = String(data.payment.credit || 0);
+    form.value.payment.remaining = String(data.payment.remaining || 0);
+
+    // Merge account amounts with existing account structure
+    if (data.payment.cashAccounts && data.payment.cashAccounts.length > 0) {
+      data.payment.cashAccounts.forEach(settlementAcc => {
+        const existingAcc = form.value.payment.cashAccounts.find(
+          acc => acc._account === settlementAcc._account
+        );
+        if (existingAcc) {
+          existingAcc.amount = String(settlementAcc.amount || 0);
+        }
+      });
+    }
+
+    if (data.payment.bankAccounts && data.payment.bankAccounts.length > 0) {
+      data.payment.bankAccounts.forEach(settlementAcc => {
+        const existingAcc = form.value.payment.bankAccounts.find(
+          acc => acc._account === settlementAcc._account
+        );
+        if (existingAcc) {
+          existingAcc.amount = String(settlementAcc.amount || 0);
+        }
+      });
+    }
+
     form.value._id = data._id;
+
+    console.log("form.value.payment after setting:", form.value.payment);
 
     // calc remaining number
     calcRemaining();
@@ -398,7 +351,7 @@ const getInfo = async () => {
 
     console.log("getInfo response data", data);
 
-    info.value.amount = data.total;
+    info.value.amount = String(data.total || 0);
     if (data._settlement) {
       // get settlement
       await getSettlement(data._settlement);
@@ -418,11 +371,11 @@ const getInfo = async () => {
 
 // Calculate remaining amount
 const calcRemaining = () => {
-  let remaining = info.value.amount;
-  remaining -= form.value.payment.cash;
-  remaining -= form.value.payment.bank;
-  remaining -= form.value.payment.credit;
-  form.value.payment.remaining = remaining;
+  let remaining = Number(info.value.amount);
+  remaining -= Number(form.value.payment.cash);
+  remaining -= Number(form.value.payment.bank);
+  remaining -= Number(form.value.payment.credit);
+  form.value.payment.remaining = String(remaining);
 };
 
 // Submit form
@@ -431,12 +384,12 @@ const submit = async () => {
   if (settlementForm.value?.isValid) {
     loading.value = true;
     action.value === "add" ? await add() : await edit();
-    info.value.amount = 0;
+    info.value.amount = "0";
     form.value.window = 1;
-    form.value.payment.cash = 0;
-    form.value.payment.bank = 0;
-    form.value.payment.credit = 0;
-    form.value.payment.remaining = 0;
+    form.value.payment.cash = "0";
+    form.value.payment.bank = "0";
+    form.value.payment.credit = "0";
+    form.value.payment.remaining = "0";
     form.value.payment.distributedBank = false;
     form.value.payment.distributedCash = false;
     loading.value = false;
@@ -445,15 +398,36 @@ const submit = async () => {
 
 // Add new settlement
 const add = async () => {
-  // convert credit number
-  form.value.payment.credit = Number(form.value.payment.credit);
+  // Prepare payment data with numbers
+  const paymentData = {
+    cash: Number(form.value.payment.cash),
+    distributedCash: form.value.payment.distributedCash,
+    bank: Number(form.value.payment.bank),
+    distributedBank: form.value.payment.distributedBank,
+    credit: Number(form.value.payment.credit),
+    remaining: Number(form.value.payment.remaining),
+    cashAccounts: form.value.payment.cashAccounts.map(acc => ({
+      ...acc,
+      amount: Number(acc.amount)
+    })),
+    bankAccounts: form.value.payment.bankAccounts.map(acc => ({
+      ...acc,
+      amount: Number(acc.amount)
+    })),
+  };
+
+  const requestData = {
+    type: String(props.type),
+    _reference: String(props._id),
+    payment: paymentData,
+  };
+
+  console.log("Add settlement request data:", requestData);
+  console.log("props.type:", props.type, "typeof:", typeof props.type);
+  console.log("props._id:", props._id, "typeof:", typeof props._id);
 
   try {
-    const data = await useApiService.post("settlements", {
-      type: props.type,
-      _reference: props._id,
-      payment: form.value.payment,
-    });
+    const data = await useApiService.post("settlements", requestData);
 
     if (data) {
       $notify("عملیات با موفقیت انجام شد", "success");
@@ -480,15 +454,37 @@ const add = async () => {
 
 // Edit existing settlement
 const edit = async () => {
-  // convert credit number
-  form.value.payment.credit = Number(form.value.payment.credit);
+  // Prepare payment data with numbers
+  const paymentData = {
+    cash: Number(form.value.payment.cash),
+    distributedCash: form.value.payment.distributedCash,
+    bank: Number(form.value.payment.bank),
+    distributedBank: form.value.payment.distributedBank,
+    credit: Number(form.value.payment.credit),
+    remaining: Number(form.value.payment.remaining),
+    cashAccounts: form.value.payment.cashAccounts.map(acc => ({
+      ...acc,
+      amount: Number(acc.amount)
+    })),
+    bankAccounts: form.value.payment.bankAccounts.map(acc => ({
+      ...acc,
+      amount: Number(acc.amount)
+    })),
+  };
+
+  // Backend requires type and _reference even for edit
+  const requestData = {
+    type: String(props.type || ""),
+    _reference: String(props._id || ""),
+    payment: paymentData,
+  };
+
+  console.log("Edit settlement request data:", requestData);
+  console.log("Settlement ID:", form.value._id);
+  console.log("Props type:", props.type, "Props _id:", props._id);
 
   try {
-    const data = await useApiService.put("settlements/" + form.value._id, {
-      type: props.type,
-      _reference: props._id,
-      payment: form.value.payment,
-    });
+    const data = await useApiService.put("settlements/" + form.value._id, requestData);
 
     if (data) {
       $notify("عملیات با موفقیت انجام شد", "success");
@@ -496,26 +492,50 @@ const edit = async () => {
     }
   } catch (error) {
     console.log("edit settlement error", error);
-    $notify("مشکلی در عملیات پیش آمد؛ لطفا دوباره تلاش کنید", "error");
+    console.log("error response:", error?.response);
+    console.log("error data:", error?.data);
+    console.log("error _data:", error?.response?._data);
+    console.log("error errors array:", error?.response?._data?.errors);
+    const status = error?.response?.status;
+    const message = error?.response?._data?.message || error?.data?.message;
+    const errors = error?.response?._data?.errors;
+
+    if (status === 400) {
+      if (errors && Array.isArray(errors) && errors.length > 0) {
+        // Show the first validation error
+        $notify(`خطای اعتبارسنجی: ${errors[0]}`, "error");
+      } else if (
+        typeof message === "string" &&
+        message.startsWith("Invalid Payment")
+      ) {
+        $notify("پرداخت نامعتبر؛ لطفا مقادیر پرداختی را بازنگری کنید", "error");
+      } else if (message) {
+        $notify(`خطا: ${message}`, "error");
+      } else {
+        $notify("مشکلی در عملیات پیش آمد؛ لطفا دوباره تلاش کنید", "error");
+      }
+    } else {
+      $notify("مشکلی در عملیات پیش آمد؛ لطفا دوباره تلاش کنید", "error");
+    }
   }
 };
 
 // Reset form
 const reset = () => {
   form.value.payment = {
-    cash: 0,
+    cash: "0",
     distributedCash: false,
-    bank: 0,
+    bank: "0",
     distributedBank: false,
-    credit: 0,
-    remaining: 0,
+    credit: "0",
+    remaining: "0",
     bankAccounts: form.value.payment.bankAccounts.map((acc) => ({
       ...acc,
-      amount: 0,
+      amount: "0",
     })),
     cashAccounts: form.value.payment.cashAccounts.map((acc) => ({
       ...acc,
-      amount: 0,
+      amount: "0",
     })),
   };
   calcRemaining();
@@ -566,16 +586,17 @@ watch(
     calcRemaining();
     if (!form.value.payment.distributedCash) {
       newVal.forEach((account) => {
-        if (!account.default && account.amount !== 0) {
+        if (!account.default && account.amount !== "0" && account.amount !== 0) {
           form.value.payment.distributedCash = true;
         }
       });
     }
 
-    form.value.payment.cash = newVal.reduce(
+    const total = newVal.reduce(
       (sum, account) => sum + Number(account.amount),
       0
     );
+    form.value.payment.cash = String(total);
   },
   { deep: true }
 );
@@ -586,16 +607,17 @@ watch(
     calcRemaining();
     if (!form.value.payment.distributedBank) {
       newVal.forEach((account) => {
-        if (!account.default && account.amount !== 0) {
+        if (!account.default && account.amount !== "0" && account.amount !== 0) {
           form.value.payment.distributedBank = true;
         }
       });
     }
 
-    form.value.payment.bank = newVal.reduce(
+    const total = newVal.reduce(
       (sum, account) => sum + Number(account.amount),
       0
     );
+    form.value.payment.bank = String(total);
   },
   { deep: true }
 );
