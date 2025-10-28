@@ -207,10 +207,76 @@ const filter = () => {
 const getSettlements = async () => {
   loading.value = true;
   try {
-    const data = await useApiService.get("settlements?" + filter());
-    list.value = data.list || [];
-    pageCount.value = Math.ceil(data.total / perPage.value);
+    const settlements = [];
+
+    // Get settlements from sales invoices
+    const salesSearch = new URLSearchParams();
+    salesSearch.set('perPage', 100);
+    salesSearch.set('statuses', [1, 2]);
+
+    try {
+      const salesData = await useApiService.get(`sales-invoices?${salesSearch}`);
+      if (salesData.list) {
+        for (const invoice of salesData.list) {
+          if (invoice._settlement) {
+            try {
+              const settlement = await useApiService.get(`settlements/${invoice._settlement}`);
+              if (settlement) {
+                settlements.push({
+                  ...settlement,
+                  code: settlement.code || settlement._id,
+                  type: 'receive',
+                  amount: invoice.total || 0
+                });
+              }
+            } catch (e) {
+              console.error('Error fetching settlement:', e);
+            }
+          }
+        }
+      }
+    } catch (e) {
+      console.error('Error fetching sales invoices:', e);
+    }
+
+    // Get settlements from purchase invoices
+    const purchaseSearch = new URLSearchParams();
+    purchaseSearch.set('perPage', 100);
+    purchaseSearch.set('statuses', [1, 2]);
+
+    try {
+      const purchaseData = await useApiService.get(`purchase-invoices?${purchaseSearch}`);
+      if (purchaseData.list) {
+        for (const invoice of purchaseData.list) {
+          if (invoice._settlement) {
+            try {
+              const settlement = await useApiService.get(`settlements/${invoice._settlement}`);
+              if (settlement) {
+                settlements.push({
+                  ...settlement,
+                  code: settlement.code || settlement._id,
+                  type: 'payment',
+                  amount: invoice.total || 0
+                });
+              }
+            } catch (e) {
+              console.error('Error fetching settlement:', e);
+            }
+          }
+        }
+      }
+    } catch (e) {
+      console.error('Error fetching purchase invoices:', e);
+    }
+
+    list.value = settlements;
+    pageCount.value = Math.ceil(settlements.length / perPage.value);
+
+    if (settlements.length > 0) {
+      $notify("تسویه‌ها با موفقیت بارگذاری شدند", "success");
+    }
   } catch (error) {
+    console.error('Error loading settlements:', error);
     $notify("مشکلی در بارگذاری داده‌ها پیش آمد", "error");
   } finally {
     loading.value = false;

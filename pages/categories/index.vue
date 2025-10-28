@@ -105,6 +105,7 @@ import { useNuxtApp } from '#app';
 import { Icon } from '@iconify/vue';
 import Loading from '~/components/Loading.vue';
 import EmptyList from '~/components/EmptyList.vue';
+import CategoryTreeItem from '~/components/categories/CategoryTreeItem.vue';
 
 // Page meta
 definePageMeta({
